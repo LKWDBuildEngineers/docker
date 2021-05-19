@@ -1,5 +1,5 @@
-ARG hubImage="unityci/hub"
-ARG baseImage="unityci/base"
+ARG hubImage="hub:latest"
+ARG baseImage="base:latest"
 
 ###########################
 #         Builder         #
@@ -185,7 +185,7 @@ RUN [ `echo $version-$module | grep -vP '^20(?!18).*-android'` ] && exit 0 || : 
 #=======================================================================================
 # [webgl] Support audio using ffmpeg (~99MB)
 #=======================================================================================
-RUN [ `echo $module | grep -v 'webgl'` ] && exit 0 || : \
+RUN [ `echo $module | grep -v '\(webgl\|android\)'` ] && exit 0 || : \
   && apt-get update \
   && apt-get -q install -y --no-install-recommends --allow-downgrades \
     ffmpeg \
@@ -234,3 +234,11 @@ RUN [ `echo $version-$module | grep -v '^2021.*-linux-il2cpp'` ] && exit 0 || : 
     lld \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
+
+
+#=======================================================================================
+# LKWD Custom changes
+#=======================================================================================
+
+RUN mkdir -p /usr/share/unity3d/config
+COPY config/services-config.json /usr/share/unity3d/config/services-config.json

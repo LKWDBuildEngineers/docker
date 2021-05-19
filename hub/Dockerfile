@@ -1,4 +1,4 @@
-ARG baseImage="unityci/base"
+ARG baseImage="base:latest"
 FROM $baseImage
 
 # Hub dependencies
